@@ -41,6 +41,8 @@ namespace EversonTGS
         private void Form1_Load(object sender, EventArgs e)
         {
             ExibirDados();
+            btn_cancelar.Enabled = false;
+            btn_salvar.Enabled = false;
         }
 
         private void ExibirDados()
@@ -61,59 +63,14 @@ namespace EversonTGS
 
         private void btn_incluir_Click(object sender, EventArgs e)
         {
-            Foguete objFoguete = new Foguete();
-            try
-            {
-                objFoguete.IdVoo = null;
-                objFoguete.DataVoo = Convert.ToDateTime(txtData.Text);
-                objFoguete.Custo = Convert.ToDouble(txtCusto.Text);
-                objFoguete.Distancia = Convert.ToInt32(txtDistancia.Text);
-                if (rbSim.Checked)
-                {
-                    objFoguete.Captura = "S";
-                    objFoguete.NivelDor = null;
-                }
-                if (rbNao.Checked)
-                {
-                    objFoguete.Captura = "N";
-                    if (Convert.ToInt32(txtDor.Text) > 10 || Convert.ToInt32(txtDor.Text) < 0 || txtDor.Text.Equals(""))
-                    {
-                        MessageBox.Show("Insira um nível de dor de 0 a 10");
-                    }
-                    else
-                    {
-                        objFoguete.NivelDor = Convert.ToInt32(txtDor.Text);
-                    }
-                }
-
-                DataBase.RegistrarVoo(objFoguete);
-                MessageBox.Show("Dados incluidos com sucesso!");
-                txtDor.Clear();
-                txtDistancia.Clear();
-                txtData.Clear();
-                txtCusto.Clear();
-                rbNao.Checked = false;
-                rbSim.Checked = false;
-            }
-            catch (Exception ex)
-            {
-                if (ex.Message.Contains("Cadeia de caracteres não foi reconhecida como DateTime válido"))
-                {
-                    MessageBox.Show("Insira uma data válida!");
-                }
-                if (ex.Message.Contains("A cadeia de caracteres de entrada não estava em um formato correto."))
-                {
-                    MessageBox.Show("Preencha todos os campos!");
-                }
-                else
-                {
-                    MessageBox.Show("Ocorreu um erro inesperado, por favor contate o suporte.");
-                    throw;
-                }
-            }
-
-
-            ExibirDados();
+            txtDor.Clear();
+            txtDistancia.Clear();
+            txtData.Clear();
+            txtCusto.Clear();
+            rbNao.Checked = false;
+            rbSim.Checked = false;
+            btn_salvar.Enabled = true;
+            btn_cancelar.Enabled = true;
         }
 
         private void rbSim_CheckedChanged(object sender, EventArgs e)
@@ -148,27 +105,71 @@ namespace EversonTGS
 
         private void btn_salvar_Click(object sender, EventArgs e)
         {
-            if (dataGridView1.SelectedRows.Count > 0)
+            Foguete objFoguete = new Foguete();
+            try
             {
-                int linha = Convert.ToInt32(dataGridView1.CurrentRow.Cells["ID_VOO"].Value);
-
-                Foguete objFoguete = new Foguete();
-                try
+                
+                if (dataGridView1.SelectedRows.Count > 0)//editar
                 {
-                    objFoguete.IdVoo = linha;
-                    if (txtData.Text != "")
+                    int linha = Convert.ToInt32(dataGridView1.CurrentRow.Cells["ID_VOO"].Value);
+                    
+                    try
                     {
-                        objFoguete.DataVoo = Convert.ToDateTime(txtData.Text);
+                        objFoguete.IdVoo = linha;
+                        if (txtData.Text != "")
+                        {
+                            objFoguete.DataVoo = Convert.ToDateTime(txtData.Text);
+                        }
+                        else
+                        {
+                            objFoguete.DataVoo = Convert.ToDateTime(dataGridView1.CurrentRow.Cells["DATA"].Value);
+                        }
+
+                        objFoguete.Custo = txtCusto.Text != "" ? Convert.ToDouble(txtCusto.Text) : Convert.ToDouble(dataGridView1.CurrentRow.Cells["CUSTO"].Value);
+                        objFoguete.Distancia = txtDistancia.Text != "" ? Convert.ToInt32(txtDistancia.Text) : Convert.ToInt32(dataGridView1.CurrentRow.Cells["DISTANCIA"].Value);
+                        if (rbSim.Checked)
+                        {
+                            objFoguete.Captura = "S";
+                            objFoguete.NivelDor = null;
+                        }
+                        if (rbNao.Checked)
+                        {
+                            objFoguete.Captura = "N";
+                            if (Convert.ToInt32(txtDor.Text) > 10 || Convert.ToInt32(txtDor.Text) < 0 || txtDor.Text.Equals(""))
+                            {
+                                MessageBox.Show("Insira um nível de dor de 0 a 10");
+                            }
+                            else
+                            {
+                                objFoguete.NivelDor = Convert.ToInt32(txtDor.Text);
+                            }
+                        }
+                        else
+                        {
+                            objFoguete.Captura = Convert.ToString(dataGridView1.CurrentRow.Cells["CAPTURA"].Value);
+                            objFoguete.NivelDor = Convert.ToInt32(dataGridView1.CurrentRow.Cells["NIVEL_DOR"].Value);
+                        }
+
+                        DataBase.EditarVoo(objFoguete);
+                        MessageBox.Show("Dados alterados com sucesso!");
+                        txtDor.Clear();
+                        txtDistancia.Clear();
+                        txtData.Clear();
+                        txtCusto.Clear();
+                        rbNao.Checked = false;
+                        rbSim.Checked = false;
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        objFoguete.DataVoo = Convert.ToDateTime(dataGridView1.CurrentRow.Cells["DATA"].Value);
+                        MessageBox.Show("Ocorreu um erro inesperado ao editar o registro, por favor contate o suporte.");
                     }
-
-                    //var x = condition ? 12 : (int?)null;
-
-                    objFoguete.Custo = txtCusto.Text != "" ? Convert.ToDouble(txtCusto.Text) : Convert.ToDouble(dataGridView1.CurrentRow.Cells["CUSTO"].Value);
-                    objFoguete.Distancia = txtDistancia.Text != "" ? Convert.ToInt32(txtDistancia.Text) : Convert.ToInt32(dataGridView1.CurrentRow.Cells["DISTANCIA"].Value);
+                }
+                else// incluir
+                {
+                    objFoguete.IdVoo = null;
+                    objFoguete.DataVoo = Convert.ToDateTime(txtData.Text);
+                    objFoguete.Custo = Convert.ToDouble(txtCusto.Text);
+                    objFoguete.Distancia = Convert.ToInt32(txtDistancia.Text);
                     if (rbSim.Checked)
                     {
                         objFoguete.Captura = "S";
@@ -186,14 +187,9 @@ namespace EversonTGS
                             objFoguete.NivelDor = Convert.ToInt32(txtDor.Text);
                         }
                     }
-                    else
-                    {
-                        objFoguete.Captura = Convert.ToString(dataGridView1.CurrentRow.Cells["CAPTURA"].Value);
-                        objFoguete.NivelDor = Convert.ToInt32(dataGridView1.CurrentRow.Cells["NIVEL_DOR"].Value);
-                    }
 
-                    DataBase.EditarVoo(objFoguete);
-                    MessageBox.Show("Dados alterados com sucesso!");
+                    DataBase.RegistrarVoo(objFoguete);
+                    MessageBox.Show("Dados incluidos com sucesso!");
                     txtDor.Clear();
                     txtDistancia.Clear();
                     txtData.Clear();
@@ -201,21 +197,36 @@ namespace EversonTGS
                     rbNao.Checked = false;
                     rbSim.Checked = false;
                 }
-                catch (Exception ex)
+
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("Cadeia de caracteres não foi reconhecida como DateTime válido"))
                 {
-                    MessageBox.Show("Ocorreu um erro inesperado, por favor contate o suporte.", ex.Message);
+                    MessageBox.Show("Insira uma data válida!");
+                    return;
+                }
+                if (ex.Message.Contains("A cadeia de caracteres de entrada não estava em um formato correto."))
+                {
+                    MessageBox.Show("Preencha todos os campos!");
+                    return;
+                }
+                else
+                {
+                    MessageBox.Show("Ocorreu um erro inesperado ao incluir, por favor contate o suporte.");
+                   
                 }
             }
-            else
-            {
-                MessageBox.Show("Selecione uma linha para excluir!");
-            }
-
             ExibirDados();
+            btn_cancelar.Enabled = false;
+            btn_salvar.Enabled = false;
+
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+            btn_salvar.Enabled = false;
+            btn_cancelar.Enabled = false;
             int linha = Convert.ToInt32(dataGridView1.CurrentRow.Cells["ID_VOO"].Value);
             
             DataTable dataTable =  DataBase.GetVoo(linha);
@@ -234,7 +245,15 @@ namespace EversonTGS
                     rbSim.Checked = true;
                 }
             }
+            dataGridView1.CurrentRow.Selected = true;
+            
+        }
 
+        private void btn_cancelar_Click(object sender, EventArgs e)
+        {
+            btn_salvar.Enabled = false;
+            btn_cancelar.Enabled = false;
+            ExibirDados();
         }
     }
 }
