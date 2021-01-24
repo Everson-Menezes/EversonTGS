@@ -225,8 +225,8 @@ namespace EversonTGS
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            btn_salvar.Enabled = false;
-            btn_cancelar.Enabled = false;
+            btn_salvar.Enabled = true;
+            btn_cancelar.Enabled = true;
             int linha = Convert.ToInt32(dataGridView1.CurrentRow.Cells["ID_VOO"].Value);
             
             DataTable dataTable =  DataBase.GetVoo(linha);
