@@ -22,6 +22,7 @@ namespace EversonTGS
             ExibirDados();
             btn_cancelar.Enabled = false;
             btn_salvar.Enabled = false;
+            txtDor.Enabled = false;
         }
 
         private void ExibirDados()
@@ -222,6 +223,16 @@ namespace EversonTGS
             btn_salvar.Enabled = false;
             btn_cancelar.Enabled = false;
             ExibirDados();
+        }
+
+        private void rbNao_CheckedChanged(object sender, EventArgs e)
+        {
+            txtDor.Enabled = true;
+        }
+
+        private void rbSim_CheckedChanged(object sender, EventArgs e)
+        {
+            txtDor.Enabled = false;
         }
     }
 }
