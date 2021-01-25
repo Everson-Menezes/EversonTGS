@@ -94,7 +94,6 @@
             this.label2.Size = new System.Drawing.Size(58, 25);
             this.label2.TabIndex = 3;
             this.label2.Text = "Custo";
-            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // label3
             // 
@@ -157,7 +156,6 @@
             this.rbSim.TabStop = true;
             this.rbSim.Text = "Sim";
             this.rbSim.UseVisualStyleBackColor = true;
-            this.rbSim.CheckedChanged += new System.EventHandler(this.rbSim_CheckedChanged);
             // 
             // rbNao
             // 
@@ -220,7 +218,6 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(383, 341);
             this.panel2.TabIndex = 16;
-            this.panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.panel2_Paint);
             // 
             // txtData
             // 
@@ -228,7 +225,6 @@
             this.txtData.Name = "txtData";
             this.txtData.Size = new System.Drawing.Size(100, 20);
             this.txtData.TabIndex = 7;
-            this.txtData.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // panel3
             // 

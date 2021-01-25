@@ -17,27 +17,6 @@ namespace EversonTGS
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label8_Click(object sender, EventArgs e)
-        {
-
-        }
-
-
         private void Form1_Load(object sender, EventArgs e)
         {
             ExibirDados();
@@ -73,19 +52,6 @@ namespace EversonTGS
             btn_cancelar.Enabled = true;
         }
 
-        private void rbSim_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-        private void rbNao_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void panel2_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
 
         private void btn_excluir_Click(object sender, EventArgs e)
         {
@@ -138,6 +104,7 @@ namespace EversonTGS
                             if (Convert.ToInt32(txtDor.Text) > 10 || Convert.ToInt32(txtDor.Text) < 0 || txtDor.Text.Equals(""))
                             {
                                 MessageBox.Show("Insira um nível de dor de 0 a 10");
+                                return;
                             }
                             else
                             {
@@ -181,6 +148,7 @@ namespace EversonTGS
                         if (Convert.ToInt32(txtDor.Text) > 10 || Convert.ToInt32(txtDor.Text) < 0 || txtDor.Text.Equals(""))
                         {
                             MessageBox.Show("Insira um nível de dor de 0 a 10");
+                            return;
                         }
                         else
                         {
